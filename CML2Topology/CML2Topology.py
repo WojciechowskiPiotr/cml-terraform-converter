@@ -63,7 +63,7 @@ class CML2Topology:
                     "node_b": self.get_node_name_by_id(link.get('n2')),
                     # The "slot_a" and "slot_b" are optional for Terraform link resource, but when lab topology
                     # is exported from CML it is present in the YAML file so we keep it to preserve links
-                    # being assigned to proper dvice interface
+                    # being assigned to proper device interface
                     "slot_a": self.get_node_interface_slot_by_id(link.get('n1'), link.get('i1')),
                     "slot_b": self.get_node_interface_slot_by_id(link.get('n2'), link.get('i2')),
                 }

@@ -156,7 +156,6 @@ def main():
     # Convert YAML topology into Terraform
     cml_to_terraform_convert(cml2_topology, strip_extension(p.input), force=p.force)
 
-    # display_topology(cml2_topology)
     print("Converted")
 
 
