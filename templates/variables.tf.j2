@@ -1,0 +1,19 @@
+variable "address" {
+  description = "CML2 Controller address"
+  type        = string
+  default     = ""
+}
+
+variable "username" {
+  description = "CML2 Username"
+  type        = string
+  default     = "cml2"
+}
+
+variable "password" {
+  description = "CML2 user password"
+  type        = string
+  sensitive   = true
+  default     = "cml2cml2"
+}
+
