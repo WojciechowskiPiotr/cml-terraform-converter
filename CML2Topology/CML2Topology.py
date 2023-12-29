@@ -44,7 +44,7 @@ class CML2Topology:
                 }
                 self.nodes.append(new_node)
 
-    def _read_lab_links(self):
+    def _read_lab_links(self) -> None:
         """
         Read and store link information from the topology data.
 
@@ -69,7 +69,7 @@ class CML2Topology:
                 }
                 self.links.append(new_link)
 
-    def get_lab_info(self):
+    def get_lab_info(self) -> dict:
         """
         Retrieve general information about the lab.
 
@@ -81,7 +81,7 @@ class CML2Topology:
 
         return self.topology.get('lab')
 
-    def get_lab_info_title(self):
+    def get_lab_info_title(self) -> str:
         """
         Retrieve the title of the lab.
 
@@ -92,7 +92,7 @@ class CML2Topology:
 
         return self.topology.get('lab')['title'] or None
 
-    def get_lab_info_description(self):
+    def get_lab_info_description(self) -> str:
         """
         Retrieve the description of the lab.
 
@@ -103,7 +103,7 @@ class CML2Topology:
 
         return self.topology.get('lab')['description'] or None
 
-    def get_lab_info_notes(self):
+    def get_lab_info_notes(self) -> str:
         """
         Retrieve the notes associated with the lab.
 
@@ -114,7 +114,7 @@ class CML2Topology:
 
         return self.topology.get('lab')['notes'] or None
 
-    def get_lab_nodes(self):
+    def get_lab_nodes(self) -> list:
         """
         Retrieve the list of nodes in the lab.
 
@@ -126,7 +126,7 @@ class CML2Topology:
 
         return self.nodes
 
-    def get_lab_links(self):
+    def get_lab_links(self) -> list:
         """
         Retrieve the list of links in the lab.
 
@@ -138,7 +138,7 @@ class CML2Topology:
 
         return self.links
 
-    def get_node_name_by_id(self, node_id):
+    def get_node_name_by_id(self, node_id: str) -> str:
         """
         Returns the node_name for the given node_id.
 
@@ -151,7 +151,7 @@ class CML2Topology:
                 return node.get('node_name')
         raise ValueError(f"Node with ID '{node_id}' not found.")
 
-    def get_node_interface_slot_by_id(self, node_id, interface_id):
+    def get_node_interface_slot_by_id(self, node_id: str, interface_id: str) -> str:
         """
         Returns the slot identifier for the given interface_id on node given by node_id.
 

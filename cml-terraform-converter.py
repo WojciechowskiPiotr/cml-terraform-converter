@@ -7,10 +7,10 @@ from jinja2 import FileSystemLoader, Environment
 
 from CML2Topology import CML2Topology
 
-# TODO: Improve excepions handling
+# TODO: Improve exceptions handling
 
 
-def cml_to_terraform_convert(cml2topology, project_name, force):
+def cml_to_terraform_convert(cml2topology: dict, project_name: str, force: bool) -> None:
     """
     Convert a CML2 topology to Terraform configuration files.
 
@@ -18,6 +18,7 @@ def cml_to_terraform_convert(cml2topology, project_name, force):
     given topology. It creates a new Terraform project directory, renders 'variables.tf' and 'main.tf' templates
     with the topology data, and saves them to the project directory.
 
+    :param force: Flag if ignore existing destination directory
     :param cml2topology: The CML2 topology data as a dictionary.
     :param project_name: The name of the Terraform project to be created.
     """
@@ -45,7 +46,7 @@ def cml_to_terraform_convert(cml2topology, project_name, force):
     save_file_to_disk(f"{project_name}/main.tf", main_tf_content)
 
 
-def read_cml2_topology(yaml_file):
+def read_cml2_topology(yaml_file: str) -> dict:
     """
     Read and parse a CML2 topology from a YAML file.
 
@@ -65,7 +66,7 @@ def read_cml2_topology(yaml_file):
         exit(1)
 
 
-def save_file_to_disk(filename, content):
+def save_file_to_disk(filename: str, content: str) -> None:
     """
     Save given content to a file on disk.
 
@@ -80,12 +81,13 @@ def save_file_to_disk(filename, content):
     try:
         with open(filename, 'w') as file:
             file.write(content)
-        return f"File '{filename}' saved successfully."
+        print(f"File '{filename}' saved successfully.")
     except IOError as error:
-        return f"Error: Unable to save file '{filename}'. {error}"
+        print(f"Error: Unable to save file '{filename}'. {error}")
+        exit(1)
 
 
-def strip_extension(filename):
+def strip_extension(filename: str) -> str:
     """
     Remove the file extension from a filename.
 
@@ -100,7 +102,7 @@ def strip_extension(filename):
     return root
 
 
-def create_directory(directory_name, force=False):
+def create_directory(directory_name: str, force=False) -> None:
     """
     Create a directory with the given name.
 
@@ -121,7 +123,7 @@ def create_directory(directory_name, force=False):
                 print(f"Error: Directory '{directory_name}' already exists. Please remove it first")
                 exit(1)
             else:
-                print(f"Error: Directory '{directory_name}' already exists. Force flag set... Ignoring...")
+                print(f"Directory '{directory_name}' already exists. Force flag set... Ignoring...")
     except OSError as error:
         print(f"Error: {error}")
         exit(1)
@@ -136,8 +138,9 @@ def main():
     args_input.add_argument('-i', '--input', type=str,
                             help='File with input lab topology in YAML exported from CML2')
 
-    args_output.add_argument('-o', '--outfile', type=str,
-                             help='Output directory name where terraform files will be created')
+    args_output.add_argument('-o', '--outdir', type=str,
+                             help='Output directory name where terraform files will be created (by default input '
+                                  'topology filename')
     args_output.add_argument('-f', '--force', default=False, action="store_true", dest='force',
                              help='Overwrite files if destination folder exists')
 
@@ -154,7 +157,10 @@ def main():
     # TODO: Add support for reading configuration directly from CML
 
     # Convert YAML topology into Terraform
-    cml_to_terraform_convert(cml2_topology, strip_extension(p.input), force=p.force)
+    if not p.outdir:
+        cml_to_terraform_convert(cml2_topology, strip_extension(p.input), force=p.force)
+    else:
+        cml_to_terraform_convert(cml2_topology, p.outdir, force=p.force)
 
     print("Converted")
 
