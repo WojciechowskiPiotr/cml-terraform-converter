@@ -31,10 +31,14 @@ def cml_to_terraform_convert(cml2topology: dict, project_name: str, force: bool)
 
     # Render variables.tf from template
     environment = Environment(loader=FileSystemLoader("templates/"))
-    variables_template = environment.get_template("variables.tf.j2")
-    variables_tf_content = variables_template.render()
 
-    save_file_to_disk(f"{project_name}/variables.tf", variables_tf_content)
+    # If force option is set then do not render variables.tf if file exists
+    if force is True and os.path.exists(f'{project_name}/variables.tf'):
+        pass
+    else:
+        variables_template = environment.get_template("variables.tf.j2")
+        variables_tf_content = variables_template.render()
+        save_file_to_disk(f"{project_name}/variables.tf", variables_tf_content)
 
     # Render main.tf from template
     main_template = environment.get_template("main.tf.j2")
