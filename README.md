@@ -2,7 +2,7 @@
 
 Converts existing Cisco Modeling Labs lab into Terraform HCL .tf files from exported lab topology YAML file.
 
-This is an early version of the script. This version is compatible with terraform-provider-cml2 version 0.6.2. Not all features are yet implemented.
+This is an early version of the script. This version is compatible with terraform-provider-cml2 version 0.6.2. Not all features are yet implemented. Please refer to [TODO.md](https://github.com/WojciechowskiPiotr/cml-terraform-converter/TODO.md) file for the list of unsupported features and current restrictions.
 
 ## Installation
 
@@ -40,17 +40,17 @@ pip install -r requirements.txt
 
 ## Usage
 
-First export the lab topology from Cisco Modeling Labs to YAML file and store it in project folder. To export the lab log into you Cisco Modeling Labs instance, enter lab you ant to export, from top menu select Lab->Download Lab and save the file.
+First, export the lab topology from Cisco Modeling Labs to the YAML file and store it in the project folder. Log into your Cisco Modeling Labs instance to export the lab, enter the lab you want to export from the top menu, select Lab->Download Lab, and save the file.
 
-To convert lab into Terraform files use the followin command: `python3 cml-terraform-converter -i lab.yaml` where _lab.yaml_ is name of the exported file. 
+To convert lab into Terraform files use the following command: `python3 cml-terraform-converter -i lab.yaml` where _lab.yaml_ is the name of the exported file. 
 
-As a result of running the script new folder _lab_ will be created. Folder name is always the same as the exported YAML filename. It contains two files: _variables.tf_ and _main.tf_. The first files contains variables like CML server URL, login and password. Edit this file providing correct credentials. The _main.tf_ contains the topology for Terraform.
+As a result of running the script, a new folder _lab_ will be created. The folder name is always the same as the exported YAML filename. It contains two files: _variables.tf_ and _main.tf_. The first file contains variables like CML server URL, login, and password. Edit this file, providing the correct credentials. The _main.tf_ has the topology for Terraform.
 
 ## Known issues
 
-Use the [GitHub Issues](https://github.com/WojciechowskiPiotr/cml-terraform-converter/issues) to report any problems or share an ideas about how to expand the script.
+Use the [GitHub Issues](https://github.com/WojciechowskiPiotr/cml-terraform-converter/issues) to report any problems or share ideas about expanding the script.
 
 ## Getting involved
 
-If you want to contribute to this project feel free to fork it and then send you proposal using the [Pull Request](https://github.com/WojciechowskiPiotr/cml-terraform-converter/pulls).
+If you want to contribute to this project. feel free to fork it and then send your proposal using the [Pull Request](https://github.com/WojciechowskiPiotr/cml-terraform-converter/pulls).
 
