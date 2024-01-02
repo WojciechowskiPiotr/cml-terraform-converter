@@ -31,6 +31,9 @@ resource "cml2_node" "{{ node.node_name }}" {
 {%- if node.node_image_definition != None %}
   imagedefinition = "{{ node.node_image_definition }}"
 {%- endif %}
+{%- if node.node_definition == "external_connector" and node.node_configuration != None %}
+  configuration  = "{{ node.node_configuration }}"
+{%- endif %}
   x              = {{ node.node_x }}
   y              = {{ node.node_y }}
 {%- if node.node_tags|length > 0 %}

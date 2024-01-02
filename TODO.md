@@ -1,6 +1,5 @@
 # TODO
 
-* External connection data source is always NAT (requires provider 0.7.0 fo proper configuration)
 * Support for hide links (requires provider 0.7.0)
 * Support for lifecycle
 * Support for data sources
