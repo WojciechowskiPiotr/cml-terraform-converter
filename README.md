@@ -46,6 +46,27 @@ To convert lab into Terraform files use the following command: `python3 cml-terr
 
 As a result of running the script, a new folder _lab_ will be created. The folder name is always the same as the exported YAML filename. It contains two files: _variables.tf_ and _main.tf_. The first file contains variables like CML server URL, login, and password. Edit this file, providing the correct credentials. The _main.tf_ has the topology for Terraform.
 
+To read the full usage information issue `python3 cml-terraform-converter.py -h` command.
+
+```commandline
+usage: cml-terraform-converter.py [-h] [-i INPUT] [-o OUTDIR] [-f]
+
+options:
+  -h, --help            show this help message and exit
+
+Input options:
+  -i INPUT, --input INPUT
+                        File with input lab topology in YAML exported from CML2
+
+Output options:
+  -o OUTDIR, --outdir OUTDIR
+                        Output directory name where terraform files will be created (by default input topology filename
+  -f, --force           Overwrite files if destination folder exists
+
+Usage example: cml-terraform-converter.py -i file.yaml
+
+```
+
 ## Known issues
 
 Use the [GitHub Issues](https://github.com/WojciechowskiPiotr/cml-terraform-converter/issues) to report any problems or share ideas about expanding the script.
