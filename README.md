@@ -1,4 +1,4 @@
-# cml-terraform-coverter
+# cml-terraform-converter
 
 Converts existing Cisco Modeling Labs lab into Terraform HCL .tf files from exported lab topology YAML file.
 
