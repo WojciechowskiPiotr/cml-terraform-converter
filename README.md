@@ -1,5 +1,10 @@
 # cml-terraform-converter
 
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/WojciechowskiPiotr/cml-terraform-converter)
+[![python](https://img.shields.io/badge/Python-3.9-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+[![python](https://img.shields.io/badge/Python-3.10-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+[![python](https://img.shields.io/badge/Python-3.11-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+
 Converts existing Cisco Modeling Labs lab into Terraform HCL .tf files from exported lab topology YAML file.
 
 This is an early version of the script. This version is compatible with terraform-provider-cml2 version 0.6.2. Not all features are yet implemented. Please refer to [TODO.md](https://github.com/WojciechowskiPiotr/cml-terraform-converter/TODO.md) file for the list of unsupported features and current restrictions.
