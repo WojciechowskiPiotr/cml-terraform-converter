@@ -1,11 +1,11 @@
 # (c) 2023-2024 Piotr Wojciechowski <piotr@it-playground.pl>
 # MIT License (see LICENSE)
 class CML2Topology:
-    nodes = []
-    links = []
 
     def __init__(self, cml2_topology):
         self.topology = cml2_topology
+        self.nodes = []
+        self.links = []
 
         self._read_lab_nodes()
         self._read_lab_links()
@@ -24,25 +24,25 @@ class CML2Topology:
         # TODO: Add support for initial config
         # TODO: Add support for provider version 0.7.0 new features and fields
 
-        if 'nodes' in self.topology:
-            for node in self.topology['nodes']:
-                new_node = {
-                    "node_name": node.get('label'),
-                    "node_id": node.get('id'),
-                    "node_definition": node.get('node_definition'),
-                    "node_x": node.get('x'),
-                    "node_y": node.get('y'),
-                    "node_interfaces": node.get('interfaces'),
-                    "node_boot_disk_size": node.get('boot_disk_size'),
-                    "node_image_definition": node.get('image_definition'),
-                    "node_ram": node.get('ram'),
-                    "node_cpus": node.get('cpus'),
-                    "node_cpu_limit": node.get('cpu_limit'),
-                    "node_data_volume": node.get('data_volume'),
-                    "node_configuration": node.get('configuration'),
-                    "node_tags": node.get('tags'),
-                }
-                self.nodes.append(new_node)
+        self.nodes = [
+            {
+                "node_name": node.get('label'),
+                "node_id": node.get('id'),
+                "node_definition": node.get('node_definition'),
+                "node_x": node.get('x'),
+                "node_y": node.get('y'),
+                "node_interfaces": node.get('interfaces'),
+                "node_boot_disk_size": node.get('boot_disk_size'),
+                "node_image_definition": node.get('image_definition'),
+                "node_ram": node.get('ram'),
+                "node_cpus": node.get('cpus'),
+                "node_cpu_limit": node.get('cpu_limit'),
+                "node_data_volume": node.get('data_volume'),
+                "node_configuration": node.get('configuration'),
+                "node_tags": node.get('tags'),
+            }
+            for node in self.topology.get('nodes', [])
+        ]
 
     def _read_lab_links(self) -> None:
         """
@@ -55,19 +55,16 @@ class CML2Topology:
         :return: None
         """
 
-        if 'links' in self.topology:
-            for link in self.topology['links']:
-                new_link = {
-                    "link_name": link.get('id'),
-                    "node_a": self.get_node_name_by_id(link.get('n1')),
-                    "node_b": self.get_node_name_by_id(link.get('n2')),
-                    # The "slot_a" and "slot_b" are optional for Terraform link resource, but when lab topology
-                    # is exported from CML it is present in the YAML file so we keep it to preserve links
-                    # being assigned to proper device interface
-                    "slot_a": self.get_node_interface_slot_by_id(link.get('n1'), link.get('i1')),
-                    "slot_b": self.get_node_interface_slot_by_id(link.get('n2'), link.get('i2')),
-                }
-                self.links.append(new_link)
+        self.links = [
+            {
+                "link_name": link.get('id'),
+                "node_a": self.get_node_name_by_id(link.get('n1')),
+                "node_b": self.get_node_name_by_id(link.get('n2')),
+                "slot_a": self.get_node_interface_slot_by_id(link.get('n1'), link.get('i1')),
+                "slot_b": self.get_node_interface_slot_by_id(link.get('n2'), link.get('i2')),
+            }
+            for link in self.topology.get('links', [])
+        ]
 
     def get_lab_info(self) -> dict:
         """
