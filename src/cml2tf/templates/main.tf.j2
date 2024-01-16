@@ -2,7 +2,7 @@ terraform {
   required_providers {
     cml2 = {
       source = "registry.terraform.io/ciscodevnet/cml2"
-      version = "0.6.2"
+      version = ">=0.6.2"
     }
   }
 }
@@ -31,8 +31,16 @@ resource "cml2_node" "{{ node.node_name }}" {
 {%- if node.node_image_definition != None %}
   imagedefinition = "{{ node.node_image_definition }}"
 {%- endif %}
-{%- if node.node_definition == "external_connector" and node.node_configuration != None %}
-  configuration  = "{{ node.node_configuration }}"
+{%- if not node.node_configuration.empty() %}
+{%- if flags.configs %}
+  configuration  = file("{{ node.node_configuration.fileout() }}")
+{%- elif node.node_configuration.oneline() %}
+  configuration  = "{{ node.node_configuration.out() }}"
+{%- else %}
+  configuration  = <<-EOT
+{{ node.node_configuration.out(indent=4) }}
+  EOT
+{%- endif %}
 {%- endif %}
   x              = {{ node.node_x }}
   y              = {{ node.node_y }}
@@ -52,3 +60,15 @@ resource "cml2_link" "{{ link.link_name }}" {
 }
 {% endfor %}
 
+resource "cml2_lifecycle" "lc" {
+  lab_id     = cml2_lab.this.id
+  # elements is needed for 0.7.0
+  elements   = []
+  # depends on is the "native" replacement for elements
+  depends_on = [
+{%- for link in lab_links %}
+    cml2_link.{{ link.link_name }},
+{%- endfor %}
+  ]
+  state = "STARTED"
+}

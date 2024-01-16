@@ -11,6 +11,8 @@ This is an early version of the script. This version is compatible with terrafor
 
 ## Installation
 
+> Should be re-written, installation via PyPI -- dev install via pdm / venv etc.
+
 Clone the repo
 ```bash
 git clone https://github.com/WojciechowskiPiotr/cml-terraform-converter.git

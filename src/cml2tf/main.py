@@ -1,16 +1,23 @@
 # (c) 2023-2024 Piotr Wojciechowski <piotr@it-playground.pl>
 # MIT License (see LICENSE)
-import sys, os
-from argparse import ArgumentParser
-import yaml, json
-from jinja2 import FileSystemLoader, Environment
 
-from CML2Topology import CML2Topology
+import os
+import sys
+from argparse import ArgumentParser, Namespace
+
+import yaml
+from jinja2 import Environment, PackageLoader
+
+from cml2tf.topology import CML2Topology
 
 # TODO: Improve exceptions handling
 
 
-def cml_to_terraform_convert(cml2topology: dict, project_name: str, force: bool) -> None:
+def cml_to_terraform_convert(
+    cml2topology: dict,
+    project_name: str,
+    flags: Namespace,
+) -> None:
     """
     Convert a CML2 topology to Terraform configuration files.
 
@@ -27,27 +34,33 @@ def cml_to_terraform_convert(cml2topology: dict, project_name: str, force: bool)
     topology = CML2Topology.CML2Topology(cml2topology)
 
     # Create directory for a new Terraform project
-    create_directory(project_name, force)
+    create_directory(project_name, flags.force)
 
     # Render variables.tf from template
-    environment = Environment(loader=FileSystemLoader("templates/"))
+    environment = Environment(loader=PackageLoader("cml2tf"))
+
+    # change into output directory
+    os.chdir(project_name)
 
     # If force option is set then do not render variables.tf if file exists
-    if force is True and os.path.exists(f'{project_name}/variables.tf'):
+    if flags.force and os.path.exists("variables.tf"):
         pass
     else:
         variables_template = environment.get_template("variables.tf.j2")
         variables_tf_content = variables_template.render()
-        save_file_to_disk(f"{project_name}/variables.tf", variables_tf_content)
+        save_file_to_disk("variables.tf", variables_tf_content)
 
     # Render main.tf from template
     main_template = environment.get_template("main.tf.j2")
-    main_tf_content = main_template.render(lab_title=topology.get_lab_info_title(),
-                                           lab_description=topology.get_lab_info_description(),
-                                           lab_notes=topology.get_lab_info_notes(),
-                                           lab_nodes=topology.get_lab_nodes(),
-                                           lab_links=topology.get_lab_links())
-    save_file_to_disk(f"{project_name}/main.tf", main_tf_content)
+    main_tf_content = main_template.render(
+        lab_title=topology.get_lab_info_title(),
+        lab_description=topology.get_lab_info_description(),
+        lab_notes=topology.get_lab_info_notes(),
+        lab_nodes=topology.get_lab_nodes(),
+        lab_links=topology.get_lab_links(),
+        flags=flags,
+    )
+    save_file_to_disk("main.tf", main_tf_content)
 
 
 def read_cml2_topology(yaml_file: str) -> dict:
@@ -62,10 +75,10 @@ def read_cml2_topology(yaml_file: str) -> dict:
     """
 
     try:
-        with open(yaml_file, 'r') as file:
+        with open(yaml_file) as file:
             topology = yaml.safe_load(file)
             return topology
-    except IOError as error:
+    except OSError as error:
         print(f"Error reading topology file: {error}")
         exit(1)
 
@@ -83,10 +96,10 @@ def save_file_to_disk(filename: str, content: str) -> None:
     """
 
     try:
-        with open(filename, 'w') as file:
+        with open(filename, "w") as file:
             file.write(content)
         print(f"File '{filename}' saved successfully.")
-    except IOError as error:
+    except OSError as error:
         print(f"Error: Unable to save file '{filename}'. {error}")
         exit(1)
 
@@ -121,32 +134,61 @@ def create_directory(directory_name: str, force=False) -> None:
     try:
         if not os.path.exists(directory_name):
             os.makedirs(directory_name)
-            print(f"Directory '{directory_name}' for Terraform project created successfully.")
+            print(
+                f"Directory '{directory_name}' for Terraform project created successfully."
+            )
         else:
             if force is False:
-                print(f"Error: Directory '{directory_name}' already exists. Please remove it first")
+                print(
+                    f"Error: Directory '{directory_name}' already exists. Please remove it first"
+                )
                 exit(1)
             else:
-                print(f"Directory '{directory_name}' already exists. Force flag set... Ignoring...")
+                print(
+                    f"Directory '{directory_name}' already exists. Force flag set... Ignoring..."
+                )
     except OSError as error:
         print(f"Error: {error}")
         exit(1)
 
 
 def main():
-    parser = ArgumentParser(epilog="Usage example: cml-terraform-converter.py -i file.yaml")
+    parser = ArgumentParser(
+        epilog="Usage example: cml-terraform-converter.py -i file.yaml"
+    )
 
     args_input = parser.add_argument_group("Input options")
     args_output = parser.add_argument_group("Output options")
 
-    args_input.add_argument('-i', '--input', type=str,
-                            help='File with input lab topology in YAML exported from CML2')
+    args_input.add_argument(
+        "-i",
+        "--input",
+        type=str,
+        help="File with input lab topology in YAML exported from CML2",
+    )
 
-    args_output.add_argument('-o', '--outdir', type=str,
-                             help='Output directory name where terraform files will be created (by default input '
-                                  'topology filename')
-    args_output.add_argument('-f', '--force', default=False, action="store_true", dest='force',
-                             help='Overwrite files if destination folder exists')
+    args_output.add_argument(
+        "-o",
+        "--outdir",
+        type=str,
+        help="Output directory name where terraform files will be created (by default input "
+        "topology filename",
+    )
+    args_output.add_argument(
+        "-c",
+        "--configs",
+        default=False,
+        action="store_true",
+        help="store configurations in separate files",
+    )
+    args_output.add_argument(
+        "-f",
+        "--force",
+        default=False,
+        action="store_true",
+        dest="force",
+        help="Overwrite files if destination folder exists",
+    )
 
     if len(sys.argv) < 2:
         parser.print_help()
@@ -161,13 +203,11 @@ def main():
     # TODO: Add support for reading configuration directly from CML
 
     # Convert YAML topology into Terraform
-    if not p.outdir:
-        cml_to_terraform_convert(cml2_topology, strip_extension(p.input), force=p.force)
-    else:
-        cml_to_terraform_convert(cml2_topology, p.outdir, force=p.force)
+    outdir = strip_extension(p.input) if not p.outdir else p.outdir
+    cml_to_terraform_convert(cml2_topology, outdir, p)
 
     print("Converted")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
