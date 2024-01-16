@@ -3,7 +3,7 @@ name = "cml2tf"
 dynamic = ["version"]
 description = "Convert CML2 lab topologies from YAML into HCL."
 authors = [
-    {name = "Piotr Wojciechowski", email = "somewhere@tobechanged.com"},
+    {name = "Piotr Wojciechowski", email = "piotr@it-playground.pl"},
 ]
 dependencies = [
     "PyYAML>=6.0.1",
