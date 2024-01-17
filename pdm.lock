@@ -5,16 +5,30 @@
 groups = ["default", "dev", "lint"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:5e5492871ec46ac1b9311222ba89f25e3c10335184991bd90adeb3c9aa2d3eb3"
+content_hash = "sha256:d21fac13124c6bfa4c9c2e0f74139e61480d25a38a83c18ab98915cb4b6c6470"
 
 [[package]]
 name = "argparse"
 version = "1.4.0"
 summary = "Python command-line parsing library"
-groups = ["default"]
+groups = ["default", "dev"]
 files = [
     {file = "argparse-1.4.0-py2.py3-none-any.whl", hash = "sha256:c31647edb69fd3d465a847ea3157d37bed1f95f19760b11a47aa91c04b666314"},
     {file = "argparse-1.4.0.tar.gz", hash = "sha256:62b089a55be1d8949cd2bc7e0df0bddb9e028faefc8c32038cc84862aefdd6e4"},
+]
+
+[[package]]
+name = "cml2tf"
+version = "0.2.0b1.dev1"
+requires_python = ">=3.8"
+editable = true
+path = "./."
+summary = "Convert CML2 lab topologies from YAML into HCL."
+groups = ["dev"]
+dependencies = [
+    "Jinja2>=3.1.3",
+    "PyYAML>=6.0.1",
+    "argparse>=1.4.0",
 ]
 
 [[package]]
@@ -22,7 +36,7 @@ name = "jinja2"
 version = "3.1.3"
 requires_python = ">=3.7"
 summary = "A very fast and expressive template engine."
-groups = ["default"]
+groups = ["default", "dev"]
 dependencies = [
     "MarkupSafe>=2.0",
 ]
@@ -36,7 +50,7 @@ name = "markupsafe"
 version = "2.1.3"
 requires_python = ">=3.7"
 summary = "Safely add untrusted strings to HTML/XML markup."
-groups = ["default"]
+groups = ["default", "dev"]
 files = [
     {file = "MarkupSafe-2.1.3-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:cd0f502fe016460680cd20aaa5a76d241d6f35a1c3350c474bac1273803893fa"},
     {file = "MarkupSafe-2.1.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:e09031c87a1e51556fdcb46e5bd4f59dfb743061cf93c4d6831bf894f125eb57"},
@@ -96,7 +110,7 @@ name = "pyyaml"
 version = "6.0.1"
 requires_python = ">=3.6"
 summary = "YAML parser and emitter for Python"
-groups = ["default"]
+groups = ["default", "dev"]
 files = [
     {file = "PyYAML-6.0.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:d858aa552c999bc8a8d57426ed01e40bef403cd8ccdd0fc5f6f04a00414cac2a"},
     {file = "PyYAML-6.0.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:fd66fc5d0da6d9815ba2cebeb4205f95818ff4b79c3ebe268e75d961704af52f"},

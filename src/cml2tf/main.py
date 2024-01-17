@@ -21,13 +21,14 @@ def cml_to_terraform_convert(
     """
     Convert a CML2 topology to Terraform configuration files.
 
-    This function takes a CML2 topology and a project name, then generates Terraform configuration files for the
-    given topology. It creates a new Terraform project directory, renders 'variables.tf' and 'main.tf' templates
+    This function takes a CML2 topology and a project name, then generates
+    Terraform configuration files for the given topology. It creates a new
+    Terraform project directory, renders 'variables.tf' and 'main.tf' templates
     with the topology data, and saves them to the project directory.
 
-    :param force: Flag if ignore existing destination directory
     :param cml2topology: The CML2 topology data as a dictionary.
     :param project_name: The name of the Terraform project to be created.
+    :param flags: provided command line flags
     """
 
     # Create topology object based on the topology YAML
@@ -153,9 +154,8 @@ def create_directory(directory_name: str, force=False) -> None:
 
 
 def main():
-    parser = ArgumentParser(
-        epilog="Usage example: cml-terraform-converter.py -i file.yaml"
-    )
+    parser = ArgumentParser()
+    parser.epilog = f"Usage example: {parser.prog} -i topology.yaml"
 
     args_input = parser.add_argument_group("Input options")
     args_output = parser.add_argument_group("Output options")
@@ -171,8 +171,8 @@ def main():
         "-o",
         "--outdir",
         type=str,
-        help="Output directory name where terraform files will be created (by default input "
-        "topology filename",
+        help="Output directory name where Terraform files will be created "
+        + "(by default input topology filename)",
     )
     args_output.add_argument(
         "-c",

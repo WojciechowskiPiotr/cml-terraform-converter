@@ -1,4 +1,4 @@
-# cml-terraform-converter
+# CML2TF: CML to Terraform converter
 
 [![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/WojciechowskiPiotr/cml-terraform-converter)
 [![python](https://img.shields.io/badge/Python-3.9-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
@@ -7,7 +7,7 @@
 
 Converts existing Cisco Modeling Labs lab into Terraform HCL .tf files from exported lab topology YAML file.
 
-This is an early version of the script. This version is compatible with terraform-provider-cml2 version 0.6.2. Not all features are yet implemented. Please refer to [TODO.md](https://github.com/WojciechowskiPiotr/cml-terraform-converter/TODO.md) file for the list of unsupported features and current restrictions.
+This is an early version of the script. This version is compatible with terraform-provider-cml2 version 0.6.2/0.7.0. Not all features are yet implemented. Please refer to [TODO.md](https://github.com/WojciechowskiPiotr/cml-terraform-converter/TODO.md) file for the list of unsupported features and current restrictions.
 
 ## Installation
 
@@ -53,12 +53,12 @@ To convert lab into Terraform files use the following command: `python3 cml-terr
 
 As a result of running the script, a new folder _lab_ will be created. The folder name is always the same as the exported YAML filename. It contains two files: _variables.tf_ and _main.tf_. The first file contains variables like CML server URL, login, and password. Edit this file, providing the correct credentials. The _main.tf_ has the topology for Terraform.
 
-If a destination folder exists you need to use `-f` option to overwrite its content. This will let you update the converted _main.tf_ file. The _variables.tf_ file, if it exists, remains unchanged.
+If a destination folder exists you need to use the `-f` option to overwrite its content. This will let you update the converted _main.tf_ file. The _variables.tf_ file, if it exists, remains unchanged.
 
-To read the full usage information issue `python3 cml-terraform-converter.py -h` command.
+To read the full usage information issue `cml2tf -h` command.
 
 ```commandline
-usage: cml-terraform-converter.py [-h] [-i INPUT] [-o OUTDIR] [-f]
+usage: cml2f [-h] [-i INPUT] [-o OUTDIR] [-f]
 
 options:
   -h, --help            show this help message and exit
@@ -69,10 +69,11 @@ Input options:
 
 Output options:
   -o OUTDIR, --outdir OUTDIR
-                        Output directory name where terraform files will be created (by default input topology filename
+                        Output directory name where terraform files will be created (by default input topology filename)
+  -c, --configs         store configurations in separate files
   -f, --force           Overwrite files if destination folder exists
 
-Usage example: cml-terraform-converter.py -i file.yaml
+Usage example: cml2tf -i topology.yaml
 
 ```
 
@@ -82,5 +83,5 @@ Use the [GitHub Issues](https://github.com/WojciechowskiPiotr/cml-terraform-conv
 
 ## Getting involved
 
-If you want to contribute to this project. feel free to fork it and then send your proposal using the [Pull Request](https://github.com/WojciechowskiPiotr/cml-terraform-converter/pulls).
+If you want to contribute to this project. Feel free to fork it and then send your proposal using the [Pull Request](https://github.com/WojciechowskiPiotr/cml-terraform-converter/pulls).
 

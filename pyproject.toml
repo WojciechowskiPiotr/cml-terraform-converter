@@ -29,6 +29,7 @@ source = "scm"
 
 [tool.pdm.dev-dependencies]
 dev = [
+    "-e file:///${PROJECT_ROOT}/#egg=cml2tf",
 ]
 
 lint = [
