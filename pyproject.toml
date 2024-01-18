@@ -14,12 +14,12 @@ requires-python = ">=3.8"
 readme = "README.md"
 license = {text = "MIT"}
 
+[project.scripts]
+cml2tf = "cml2tf.main:main"
+
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
-
-[project.scripts]
-cml2tf = "cml2tf.main:main"
 
 [tool.pdm]
 package-type = "application"
@@ -29,10 +29,8 @@ source = "scm"
 
 [tool.pdm.dev-dependencies]
 dev = [
-    "-e file:///${PROJECT_ROOT}/#egg=cml2tf",
-]
-
-lint = [
+    "pytest>=7.4.4",
+    "pytest-cov>=4.1.0",
     "ruff>=0.1.13",
 ]
 
@@ -57,4 +55,15 @@ include = ["**/*.py", "**/*.pyi", "**/pyproject.toml"]
 
 [tool.ruff.pydocstyle]
 convention = "google"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+    "integration",
+]
+
+[tool.coverage.run]
+source = [ "src" ]
 

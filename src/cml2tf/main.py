@@ -32,7 +32,7 @@ def cml_to_terraform_convert(
     """
 
     # Create topology object based on the topology YAML
-    topology = CML2Topology.CML2Topology(cml2topology)
+    topology = CML2Topology(cml2topology)
 
     # Create directory for a new Terraform project
     create_directory(project_name, flags.force)
@@ -68,8 +68,8 @@ def read_cml2_topology(yaml_file: str) -> dict:
     """
     Read and parse a CML2 topology from a YAML file.
 
-    This function opens a YAML file containing a CML2 topology, reads its contents, and parses it into a
-    Python dictionary.
+    This function opens a YAML file containing a CML2 topology, reads its
+    contents, and parses it into a Python dictionary.
 
     :param yaml_file: The path to the YAML file containing the CML2 topology.
     :return: A dictionary representing the parsed CML2 topology.
@@ -88,8 +88,9 @@ def save_file_to_disk(filename: str, content: str) -> None:
     """
     Save given content to a file on disk.
 
-    This function writes the provided content to a file specified by 'filename'. If the file cannot be written,
-    it catches the IOError and returns an error message.
+    This function writes the provided content to a file specified by
+    'filename'. If the file cannot be written, it catches the IOError and
+    returns an error message.
 
     :param filename: The name of the file to save the content to.
     :param content: The content to be saved in the file.
@@ -109,8 +110,9 @@ def strip_extension(filename: str) -> str:
     """
     Remove the file extension from a filename.
 
-    This function takes a filename and returns the filename without its extension. It is useful for processing
-    file paths where the extension is not needed.
+    This function takes a filename and returns the filename without its
+    extension. It is useful for processing file paths where the extension is
+    not needed.
 
     :param filename: The filename from which to strip the extension.
     :return: The filename without its extension.
@@ -124,8 +126,10 @@ def create_directory(directory_name: str, force=False) -> None:
     """
     Create a directory with the given name.
 
-    This function attempts to create a directory with the specified 'directory_name'. If the directory already exists,
-    it prints an error message. It also handles and prints any OSError that might occur during the creation process.
+    This function attempts to create a directory with the specified
+    'directory_name'. If the directory already exists, it prints an error
+    message. It also handles and prints any OSError that might occur during the
+    creation process.
 
     :param directory_name: The name of the directory to be created.
     :param force: If True then ignore that directory exists
@@ -207,7 +211,3 @@ def main():
     cml_to_terraform_convert(cml2_topology, outdir, p)
 
     print("Converted")
-
-
-if __name__ == "__main__":
-    main()
