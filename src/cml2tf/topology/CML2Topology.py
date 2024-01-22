@@ -44,7 +44,7 @@ class CML2Topology:
                 "node_cpu_limit": node.get("cpu_limit"),
                 "node_data_volume": node.get("data_volume"),
                 "node_configuration": NodeConfig(
-                    node.get("label"), node.get("configuration")
+                    node.get("label"), node.get("configuration", "")
                 ),
                 "node_tags": node.get("tags"),
             }
