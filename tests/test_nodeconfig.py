@@ -55,3 +55,9 @@ def test_fileout_list_config(tmp_path):
     with open(filename) as f:
         content = f.read()
     assert content == config_list[0]["content"]
+
+
+def test_empy_config():
+    config = NodeConfig("label", [])
+    assert config.empty()
+    assert config.out() == ""

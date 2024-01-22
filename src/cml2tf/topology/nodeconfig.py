@@ -30,7 +30,8 @@ class NodeConfig:
         provider supports multi-line configs.
         """
         if isinstance(self._config, list):
-            assert len(self._config) > 0
+            if len(self._config) == 0:
+                return ""
             config = self._config[0]["content"]
             # TODO: need to process multi-configs when TF provider supports them!
             # for item in self._config:
@@ -49,6 +50,7 @@ class NodeConfig:
         """
         filename = ""
         if isinstance(self._config, list):
+            # this should never be called for an empty file
             assert len(self._config) > 0
             name = self._config[0]["name"]
             config = self._config[0]["content"]

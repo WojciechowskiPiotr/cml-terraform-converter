@@ -211,3 +211,7 @@ def main():
     cml_to_terraform_convert(cml2_topology, outdir, p)
 
     print("Converted")
+
+
+if __name__ == "__main__":
+    main()

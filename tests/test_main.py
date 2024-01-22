@@ -91,12 +91,20 @@ def test_cml_to_terraform_convert():
         assert len(saved_content.keys()) == 2
 
 
-def test_integration(request, tmp_path):
-    os.chdir(tmp_path)
+@pytest.mark.parametrize(
+    "toponame,expected",
+    [("topology.yaml", 8), ("mini.yaml", 4)],
+)
+def test_integration(request, tmp_path, toponame, expected):
     testdata = Path(request.path).parent / "testdata"
+
+    test_dir = tmp_path / toponame
+    os.mkdir(test_dir)
+    os.chdir(test_dir)
+
     with patch(
         "sys.argv",
-        ["prog", "-c", "-f", "-i", f"{testdata}/topology.yaml", "-o", str(tmp_path)],
+        ["prog", "-c", "-f", "-i", f"{testdata}/{toponame}", "-o", str(test_dir)],
     ):
         cml2tf.main.main()
-    assert len(list(tmp_path.iterdir())) == 8
+    assert len(list(test_dir.iterdir())) == expected
