@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "cml2" {
-  address = var.address
+  address  = var.address
   username = var.username
   password = var.password
 }
@@ -62,9 +62,9 @@ resource "cml2_link" "{{ link.link_name }}" {
 
 resource "cml2_lifecycle" "lc" {
   lab_id     = cml2_lab.this.id
-  # elements is needed for 0.7.0
+  # elements is still required up to version 0.7.0
   elements   = []
-  # depends on is the "native" replacement for elements
+  # depends_on is the "native" replacement for elements
   depends_on = [
 {%- for link in lab_links %}
     cml2_link.{{ link.link_name }},

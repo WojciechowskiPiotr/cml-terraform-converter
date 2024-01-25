@@ -8,6 +8,8 @@
 [![CI](https://github.com/rschmied/cml-terraform-converter/actions/workflows/python-package.yml/badge.svg)](https://github.com/rschmied/cml-terraform-converter/actions/workflows/python-package.yml)
 [![PyPI version](https://badge.fury.io/py/virl2-client.svg)](https://badge.fury.io/py/virl2-client)
 
+> **Note**: Change the coverage, CI and PyPI badges so that they point to the correct repositories/projects.  This note must be removed then.
+
 Converts existing Cisco Modeling Labs lab into Terraform HCL .tf files from exported lab topology YAML file.
 
 This is an early version of the script. This version is compatible with terraform-provider-cml2 version 0.6.2/0.7.0. Not all features are implemented, yet. Please refer to [TODO.md](https://github.com/WojciechowskiPiotr/cml-terraform-converter/TODO.md) file for the list of unsupported features and current restrictions.
