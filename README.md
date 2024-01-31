@@ -12,7 +12,7 @@
 
 Converts existing Cisco Modeling Labs lab into Terraform HCL .tf files from exported lab topology YAML file.
 
-This is an early version of the script. This version is compatible with terraform-provider-cml2 version 0.6.2/0.7.0. Not all features are implemented, yet. Please refer to [TODO.md](https://github.com/WojciechowskiPiotr/cml-terraform-converter/TODO.md) file for the list of unsupported features and current restrictions.
+This is an early version of the script. This version is compatible with *terraform-provider-cml2* version 0.6.2/0.7.0. Not all features are implemented, yet. Please refer to [TODO.md](https://github.com/WojciechowskiPiotr/cml-terraform-converter/TODO.md) file for the list of unsupported features and current restrictions.
 
 ## Installation
 
@@ -37,7 +37,7 @@ Once installed, you can get a development environment using the follwing steps:
     pdm venv create
     pdm venv activate
     ```
-    You need to copy / paste the resulting string into your shell or use something like [direnv](https://direnv.net) to automate this.
+    Copy / paste the resulting string into your shell or use something like [direnv](https://direnv.net) to automate this.
 
     > **Note:** Creation of the venv is only needed once, activation whenever you want to work with the venv!
 4. Install dependencies
@@ -57,9 +57,9 @@ Code should be formatted with _ruff_ which is installed as part of the dev depen
 
 ## Usage
 
-First, export the lab topology from Cisco Modeling Labs to the YAML file and store it in the project folder. Log into your Cisco Modeling Labs instance to export the lab, enter the lab you want to export from the top menu, select Lab->Download Lab, and save the file.
+First, export the lab topology from Cisco Modeling Labs to the YAML file and store it in the project folder. Log into your Cisco Modeling Labs instance to export the lab, enter the lab you want to export from the top menu, select Lab → Download Lab, and save the file.
 
-To convert lab into Terraform files use the following command: `cml2tf -i lab.yaml` where _lab.yaml_ is the name of the exported file. 
+To convert a lab into Terraform files, use the following command: `cml2tf -i lab.yaml` where _lab.yaml_ is the name of the exported file.
 
 As a result of running the script, a new folder _lab_ will be created. The folder name is always the same as the exported YAML filename. It contains two files: _variables.tf_ and _main.tf_. The first file contains variables like CML server URL, login, and password. Edit this file, providing the correct credentials. The _main.tf_ has the topology for Terraform.
 
@@ -70,7 +70,7 @@ If you want to have the configurations of the lab nodes separated out into indiv
 To read the full usage information issue `cml2tf -h` command.
 
 ```commandline
-usage: cml2f [-h] [-i INPUT] [-o OUTDIR] [-f]
+usage: cml2tf [-h] [-i INPUT] [-o OUTDIR] [-f]
 
 options:
   -h, --help            show this help message and exit
@@ -86,14 +86,13 @@ Output options:
   -f, --force           Overwrite files if destination folder exists
 
 Usage example: cml2tf -i topology.yaml
-
 ```
 
 ## Known issues
 
-Use the [GitHub Issues](https://github.com/WojciechowskiPiotr/cml-terraform-converter/issues) to report any problems or share ideas about expanding the script.
+Use [GitHub Issues](https://github.com/WojciechowskiPiotr/cml-terraform-converter/issues) to report any problems or share ideas about expanding the script.
 
 ## Getting involved
 
-If you want to contribute to this project. Feel free to fork it and then send your proposal using the [Pull Request](https://github.com/WojciechowskiPiotr/cml-terraform-converter/pulls).
+If you want to contribute to this project, feel free to fork it and then send your proposal using a [Pull Request](https://github.com/WojciechowskiPiotr/cml-terraform-converter/pulls).
 

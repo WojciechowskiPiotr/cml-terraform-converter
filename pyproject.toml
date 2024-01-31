@@ -22,7 +22,7 @@ requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm]
-package-type = "application"
+distribution = false
 
 [tool.pdm.version]
 source = "scm"
