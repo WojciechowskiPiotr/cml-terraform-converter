@@ -4,8 +4,8 @@
 [![python](https://img.shields.io/badge/Python-3.9-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
 [![python](https://img.shields.io/badge/Python-3.10-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
 [![python](https://img.shields.io/badge/Python-3.11-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
-[![Coverage Status](https://coveralls.io/repos/github/rschmied/cml-terraform-converter/badge.svg?branch=cml2tf)](https://coveralls.io/github/rschmied/cml-terraform-converter?branch=cml2tf)
-[![CI](https://github.com/rschmied/cml-terraform-converter/actions/workflows/python-package.yml/badge.svg)](https://github.com/rschmied/cml-terraform-converter/actions/workflows/python-package.yml)
+[![Coverage Status](https://coveralls.io/repos/github/WojciechowskiPiotr/cml-terraform-converter/badge.svg)](https://coveralls.io/github/WojciechowskiPiotr/cml-terraform-converter)
+[![CI](https://github.com/WojciechowskiPiotr/cml-terraform-converter/actions/workflows/python-package.yml/badge.svg)](https://github.com/WojciechowskiPiotr/cml-terraform-converter/actions/workflows/python-package.yml)
 [![PyPI version](https://badge.fury.io/py/virl2-client.svg)](https://badge.fury.io/py/virl2-client)
 
 > **Note**: Change the coverage, CI and PyPI badges so that they point to the correct repositories/projects.  This note must be removed then.
