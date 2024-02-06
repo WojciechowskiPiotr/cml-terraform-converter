@@ -1,7 +1,12 @@
 # (c) 2023-2024 Piotr Wojciechowski <piotr@it-playground.pl>
 # MIT License (see LICENSE)
-class CML2Topology:
 
+from typing import Optional
+
+from .nodeconfig import NodeConfig
+
+
+class CML2Topology:
     def __init__(self, cml2_topology):
         self.topology = cml2_topology
         self.nodes = []
@@ -26,22 +31,24 @@ class CML2Topology:
 
         self.nodes = [
             {
-                "node_name": node.get('label'),
-                "node_id": node.get('id'),
-                "node_definition": node.get('node_definition'),
-                "node_x": node.get('x'),
-                "node_y": node.get('y'),
-                "node_interfaces": node.get('interfaces'),
-                "node_boot_disk_size": node.get('boot_disk_size'),
-                "node_image_definition": node.get('image_definition'),
-                "node_ram": node.get('ram'),
-                "node_cpus": node.get('cpus'),
-                "node_cpu_limit": node.get('cpu_limit'),
-                "node_data_volume": node.get('data_volume'),
-                "node_configuration": node.get('configuration'),
-                "node_tags": node.get('tags'),
+                "node_name": node.get("label"),
+                "node_id": node.get("id"),
+                "node_definition": node.get("node_definition"),
+                "node_x": node.get("x"),
+                "node_y": node.get("y"),
+                "node_interfaces": node.get("interfaces"),
+                "node_boot_disk_size": node.get("boot_disk_size"),
+                "node_image_definition": node.get("image_definition"),
+                "node_ram": node.get("ram"),
+                "node_cpus": node.get("cpus"),
+                "node_cpu_limit": node.get("cpu_limit"),
+                "node_data_volume": node.get("data_volume"),
+                "node_configuration": NodeConfig(
+                    node.get("label"), node.get("configuration", "")
+                ),
+                "node_tags": node.get("tags"),
             }
-            for node in self.topology.get('nodes', [])
+            for node in self.topology.get("nodes", [])
         ]
 
     def _read_lab_links(self) -> None:
@@ -57,13 +64,17 @@ class CML2Topology:
 
         self.links = [
             {
-                "link_name": link.get('id'),
-                "node_a": self.get_node_name_by_id(link.get('n1')),
-                "node_b": self.get_node_name_by_id(link.get('n2')),
-                "slot_a": self.get_node_interface_slot_by_id(link.get('n1'), link.get('i1')),
-                "slot_b": self.get_node_interface_slot_by_id(link.get('n2'), link.get('i2')),
+                "link_name": link.get("id"),
+                "node_a": self.get_node_name_by_id(link.get("n1")),
+                "node_b": self.get_node_name_by_id(link.get("n2")),
+                "slot_a": self.get_node_interface_slot_by_id(
+                    link.get("n1"), link.get("i1")
+                ),
+                "slot_b": self.get_node_interface_slot_by_id(
+                    link.get("n2"), link.get("i2")
+                ),
             }
-            for link in self.topology.get('links', [])
+            for link in self.topology.get("links", [])
         ]
 
     def get_lab_info(self) -> dict:
@@ -76,9 +87,9 @@ class CML2Topology:
         :return: A dictionary containing the lab information, or None if not available.
         """
 
-        return self.topology.get('lab')
+        return self.topology.get("lab")
 
-    def get_lab_info_title(self) -> str:
+    def get_lab_info_title(self) -> Optional[str]:
         """
         Retrieve the title of the lab.
 
@@ -87,9 +98,9 @@ class CML2Topology:
         :return: The title of the lab as a string, or None if not available.
         """
 
-        return self.topology.get('lab')['title'] or None
+        return self.topology.get("lab")["title"] or None
 
-    def get_lab_info_description(self) -> str:
+    def get_lab_info_description(self) -> Optional[str]:
         """
         Retrieve the description of the lab.
 
@@ -98,9 +109,9 @@ class CML2Topology:
         :return: The description of the lab as a string, or None if not available.
         """
 
-        return self.topology.get('lab')['description'] or None
+        return self.topology.get("lab")["description"] or None
 
-    def get_lab_info_notes(self) -> str:
+    def get_lab_info_notes(self) -> Optional[str]:
         """
         Retrieve the notes associated with the lab.
 
@@ -109,7 +120,7 @@ class CML2Topology:
         :return: The notes of the lab as a string, or None if not available.
         """
 
-        return self.topology.get('lab')['notes'] or None
+        return self.topology.get("lab")["notes"] or None
 
     def get_lab_nodes(self) -> list:
         """
@@ -135,7 +146,7 @@ class CML2Topology:
 
         return self.links
 
-    def get_node_name_by_id(self, node_id: str) -> str:
+    def get_node_name_by_id(self, node_id: str) -> Optional[str]:
         """
         Returns the node_name for the given node_id.
 
@@ -144,11 +155,13 @@ class CML2Topology:
         :raises ValueError: If the node_id is not found in the list.
         """
         for node in self.nodes:
-            if node.get('node_id') == node_id:
-                return node.get('node_name')
+            if node.get("node_id") == node_id:
+                return node.get("node_name")
         raise ValueError(f"Node with ID '{node_id}' not found.")
 
-    def get_node_interface_slot_by_id(self, node_id: str, interface_id: str) -> str:
+    def get_node_interface_slot_by_id(
+        self, node_id: str, interface_id: str
+    ) -> Optional[str]:
         """
         Returns the slot identifier for the given interface_id on node given by node_id.
 
@@ -158,9 +171,8 @@ class CML2Topology:
         :raises ValueError: If the node_id is not found in the list.
         """
         for node in self.nodes:
-            if node.get('node_id') == node_id:
-                for interface in node.get('node_interfaces'):
-                    if interface.get('id') == interface_id:
-                        return interface.get('slot')
+            if node.get("node_id") == node_id:
+                for interface in node.get("node_interfaces", []):
+                    if interface.get("id") == interface_id:
+                        return interface.get("slot")
         raise ValueError(f"Node with ID '{node_id}' not found.")
-
